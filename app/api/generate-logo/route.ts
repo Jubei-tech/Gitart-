@@ -35,11 +35,10 @@ export async function POST(request: NextRequest) {
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "dall-e-3",
+        model: "dall-e-2",
         prompt: prompt,
         n: 1,
-        size: "1024x1024",
-        quality: "standard",
+        size: "512x512",
       }),
     });
 
