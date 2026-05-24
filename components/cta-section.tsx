@@ -1,9 +1,13 @@
 "use client"
 
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { TerminalWindow, TerminalLine } from "./terminal-window"
+import { TerminalModal } from "./terminal-modal"
 
 export function CTASection() {
+  const [isTerminalOpen, setIsTerminalOpen] = useState(false)
+
   return (
     <section className="py-20 px-4 bg-gradient-to-b from-background to-secondary/20">
       <div className="max-w-4xl mx-auto text-center">
@@ -33,7 +37,11 @@ export function CTASection() {
         </TerminalWindow>
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
+          <Button 
+            size="lg" 
+            className="bg-primary text-primary-foreground hover:bg-primary/90"
+            onClick={() => setIsTerminalOpen(true)}
+          >
             Get Started Free
           </Button>
           <Button size="lg" variant="outline" className="border-border hover:bg-secondary">
@@ -45,6 +53,8 @@ export function CTASection() {
           Free to use. Deploy unlimited websites. Mint on Base.
         </p>
       </div>
+
+      <TerminalModal isOpen={isTerminalOpen} onClose={() => setIsTerminalOpen(false)} />
     </section>
   )
 }
