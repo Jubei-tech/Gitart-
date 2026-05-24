@@ -1,9 +1,13 @@
 "use client"
 
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { TypewriterDemo } from "./typewriter-demo"
+import { TerminalModal } from "./terminal-modal"
 
 export function HeroSection() {
+  const [isTerminalOpen, setIsTerminalOpen] = useState(false)
+
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center px-4 pt-20 overflow-hidden scanline">
       {/* Background grid */}
@@ -36,11 +40,22 @@ export function HeroSection() {
         </p>
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 gap-2">
+          <Button 
+            size="lg" 
+            className="bg-primary text-primary-foreground hover:bg-primary/90 gap-2"
+            onClick={() => setIsTerminalOpen(true)}
+          >
             <span className="text-primary-foreground/70">$</span>
             gitart start
           </Button>
-          <Button size="lg" variant="outline" className="border-border hover:bg-secondary">
+          <Button 
+            size="lg" 
+            variant="outline" 
+            className="border-primary text-primary hover:bg-primary/10"
+            onClick={() => {
+              document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })
+            }}
+          >
             View Demo
           </Button>
         </div>
@@ -60,6 +75,9 @@ export function HeroSection() {
           <path d="M12 5v14M5 12l7 7 7-7"/>
         </svg>
       </div>
+
+      {/* Terminal Modal */}
+      <TerminalModal isOpen={isTerminalOpen} onClose={() => setIsTerminalOpen(false)} />
     </section>
   )
 }
