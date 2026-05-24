@@ -323,25 +323,30 @@ export function TerminalModal({
 
             {/* GitHub push message */}
             {isComplete && (
-              <div className="mt-4 pt-4 border-t border-border">
-                <div className="flex items-center gap-3">
-                  <span className="text-primary">Ready to deploy!</span>
-                  <span className="text-muted-foreground">Push to GitHub to continue</span>
+              <div className="mt-6">
+                <div className="text-[oklch(0.55_0.25_200)] mb-2">
+                  gitart create logo "your idea"
                 </div>
-                <div className="mt-3">
-                  <Button
-                    asChild
-                    className="bg-primary text-primary-foreground hover:bg-primary/90 gap-2"
-                  >
-                    <a 
-                      href="https://github.com/login" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
+                <div className="mt-4 pt-4 border-t border-border">
+                  <div className="flex items-center gap-3">
+                    <span className="text-primary">Ready to deploy!</span>
+                    <span className="text-muted-foreground">Push to GitHub to continue</span>
+                  </div>
+                  <div className="mt-3">
+                    <Button
+                      asChild
+                      className="bg-primary text-primary-foreground hover:bg-primary/90 gap-2"
                     >
-                      <Github className="w-4 h-4" />
-                      Push to GitHub
-                    </a>
-                  </Button>
+                      <a 
+                        href="https://github.com/login" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                      >
+                        <Github className="w-4 h-4" />
+                        Push to GitHub
+                      </a>
+                    </Button>
+                  </div>
                 </div>
               </div>
             )}
@@ -356,7 +361,7 @@ export function TerminalModal({
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   className="flex-1 bg-transparent outline-none text-foreground caret-primary"
-                  placeholder='gitart create "my awesome project"'
+                  placeholder='gitart create logo "your idea"'
                   autoFocus
                 />
                 <span className="typing-cursor" />
