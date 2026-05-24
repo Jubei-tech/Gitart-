@@ -64,6 +64,9 @@ export function TerminalModal({
       { text: "", type: "system", delay: 200 },
       { text: "✓ Done!", type: "success", delay: 300 },
       { text: "", type: "system", delay: 200 },
+      { text: 'Run "gitart deploy" to publish on Base', type: "info", delay: 150 },
+      { text: "", type: "system", delay: 200 },
+      { text: "Want a logo? Type:", type: "system", delay: 150 },
       { text: `gitart create logo "${idea}"`, type: "command", delay: 100 },
     ];
 
