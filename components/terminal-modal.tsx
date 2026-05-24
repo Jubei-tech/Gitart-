@@ -220,7 +220,6 @@ export function TerminalModal({
         { text: `$ ${inputValue}`, type: "command" },
         { text: 'Error: Invalid command. Use:', type: "info" },
         { text: '  gitart create "your idea"', type: "command" },
-        { text: '  gitart create logo "your idea"', type: "command" },
       ]);
       setInputValue("");
       return;
