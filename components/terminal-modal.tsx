@@ -324,9 +324,29 @@ export function TerminalModal({
             {/* GitHub push message */}
             {isComplete && (
               <div className="mt-6">
-                <div className="text-[oklch(0.55_0.25_200)] mb-2">
-                  gitart create logo "your idea"
+                {/* Logo command input */}
+                <div className="flex items-center">
+                  <span className="text-[oklch(0.55_0.25_200)]">gitart create logo "</span>
+                  <input
+                    type="text"
+                    className="bg-transparent outline-none text-[oklch(0.55_0.25_200)] border-b border-[oklch(0.55_0.25_200)] placeholder:text-[oklch(0.55_0.25_200)]/50 w-32"
+                    placeholder="your idea"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && e.currentTarget.value.trim()) {
+                        const logoIdea = e.currentTarget.value.trim();
+                        setInputValue(`gitart create logo "${logoIdea}"`);
+                        setTimeout(() => {
+                          const form = document.querySelector("form");
+                          if (form) {
+                            form.dispatchEvent(new Event("submit", { bubbles: true }));
+                          }
+                        }, 100);
+                      }
+                    }}
+                  />
+                  <span className="text-[oklch(0.55_0.25_200)]">"</span>
                 </div>
+
                 <div className="mt-4 pt-4 border-t border-border">
                   <div className="flex items-center gap-3">
                     <span className="text-primary">Ready to deploy!</span>
