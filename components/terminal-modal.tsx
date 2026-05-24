@@ -321,33 +321,6 @@ export function TerminalModal({
               </div>
             )}
 
-            {/* GitHub push message */}
-            {isComplete && (
-              <div className="mt-6">
-                <div className="mt-4 pt-4 border-t border-border">
-                  <div className="flex items-center gap-3">
-                    <span className="text-primary">Ready to deploy!</span>
-                    <span className="text-muted-foreground">Push to GitHub to continue</span>
-                  </div>
-                  <div className="mt-3">
-                    <Button
-                      asChild
-                      className="bg-primary text-primary-foreground hover:bg-primary/90 gap-2"
-                    >
-                      <a 
-                        href="https://github.com/login" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                      >
-                        <Github className="w-4 h-4" />
-                        Push to GitHub
-                      </a>
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            )}
-
             {/* Input */}
             {showInput && !isGenerating && (
               <form onSubmit={handleSubmit} className="flex items-center mt-2">
@@ -363,6 +336,31 @@ export function TerminalModal({
                 />
                 <span className="typing-cursor" />
               </form>
+            )}
+
+            {/* GitHub push message - at the very bottom */}
+            {isComplete && (
+              <div className="mt-6 pt-4 border-t border-border">
+                <div className="flex items-center gap-3">
+                  <span className="text-primary">Ready to deploy!</span>
+                  <span className="text-muted-foreground">Push to GitHub to continue</span>
+                </div>
+                <div className="mt-3">
+                  <Button
+                    asChild
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 gap-2"
+                  >
+                    <a 
+                      href="https://github.com/login" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                    >
+                      <Github className="w-4 h-4" />
+                      Push to GitHub
+                    </a>
+                  </Button>
+                </div>
+              </div>
             )}
           </div>
         </div>
