@@ -6,8 +6,9 @@ import { Button } from "@/components/ui/button";
 
 interface TerminalLine {
   text: string;
-  type: "system" | "command" | "success" | "info" | "header" | "section" | "detail";
+  type: "system" | "command" | "success" | "info" | "header" | "section" | "detail" | "image";
   delay?: number;
+  imageUrl?: string;
 }
 
 export function TerminalModal({
@@ -24,6 +25,7 @@ export function TerminalModal({
   const [currentTypingLine, setCurrentTypingLine] = useState<number>(-1);
   const [displayedText, setDisplayedText] = useState("");
   const [isComplete, setIsComplete] = useState(false);
+  const [generatedLogo, setGeneratedLogo] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
 
@@ -33,6 +35,7 @@ export function TerminalModal({
     { text: "", type: "system" },
     { text: "Type:", type: "system" },
     { text: 'gitart create "your website idea"', type: "command" },
+    { text: 'gitart create logo "your website idea"', type: "command" },
   ];
 
   useEffect(() => {
@@ -44,6 +47,7 @@ export function TerminalModal({
       setCurrentTypingLine(-1);
       setDisplayedText("");
       setIsComplete(false);
+      setGeneratedLogo(null);
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [isOpen]);
@@ -122,8 +126,87 @@ export function TerminalModal({
     setIsComplete(true);
   }, []);
 
+  const generateLogoWithAPI = useCallback(async (idea: string) => {
+    const loadingLines: TerminalLine[] = [
+      { text: "", type: "system", delay: 300 },
+      { text: "⠋ Initializing logo generation...", type: "info", delay: 400 },
+      { text: "⠙ Connecting to OpenAI DALL-E...", type: "info", delay: 500 },
+      { text: "⠹ Creating cartoon-style logo...", type: "info", delay: 400 },
+    ];
+
+    // Show loading lines first
+    for (const line of loadingLines) {
+      setLines((prev) => [...prev, line]);
+      await new Promise((resolve) => setTimeout(resolve, line.delay || 100));
+    }
+
+    try {
+      const response = await fetch("/api/generate-logo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idea }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to generate logo");
+      }
+
+      setGeneratedLogo(data.imageUrl);
+
+      const successLines: TerminalLine[] = [
+        { text: "", type: "system", delay: 200 },
+        { text: "✓ Logo generated successfully!", type: "success", delay: 300 },
+        { text: `✓ Style: Cartoon/Mascot`, type: "success", delay: 200 },
+        { text: `✓ Theme: ${idea}`, type: "success", delay: 200 },
+        { text: "", type: "system", delay: 200 },
+        { text: "Logo Preview:", type: "header", delay: 150 },
+        { text: data.imageUrl, type: "image", imageUrl: data.imageUrl, delay: 100 },
+        { text: "", type: "system", delay: 200 },
+        { text: "Run:", type: "system", delay: 150 },
+        { text: "  gitart download-logo", type: "command", delay: 100 },
+        { text: "  gitart apply-logo", type: "command", delay: 100 },
+      ];
+
+      for (const line of successLines) {
+        setLines((prev) => [...prev, line]);
+        await new Promise((resolve) => setTimeout(resolve, line.delay || 100));
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      setLines((prev) => [
+        ...prev,
+        { text: "", type: "system" },
+        { text: `✗ Error: ${errorMessage}`, type: "info" },
+        { text: "Please try again.", type: "info" },
+      ]);
+    }
+
+    setIsGenerating(false);
+    setIsComplete(true);
+  }, []);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Check for logo creation command first
+    const logoMatch = inputValue.match(/gitart\s+create\s+logo\s+["'](.+?)["']/i);
+    if (logoMatch) {
+      const idea = logoMatch[1];
+      setShowInput(false);
+      setIsGenerating(true);
+      
+      setLines((prev) => [
+        ...prev,
+        { text: "", type: "system" },
+        { text: `$ gitart create logo "${idea}"`, type: "command" },
+      ]);
+
+      generateLogoWithAPI(idea);
+      setInputValue("");
+      return;
+    }
     
     const match = inputValue.match(/gitart\s+create\s+["'](.+?)["']/i);
     if (!match) {
@@ -131,7 +214,9 @@ export function TerminalModal({
         ...prev,
         { text: "", type: "system" },
         { text: `$ ${inputValue}`, type: "command" },
-        { text: 'Error: Invalid command. Use: gitart create "your idea"', type: "info" },
+        { text: 'Error: Invalid command. Use:', type: "info" },
+        { text: '  gitart create "your idea"', type: "command" },
+        { text: '  gitart create logo "your idea"', type: "command" },
       ]);
       setInputValue("");
       return;
@@ -211,7 +296,17 @@ export function TerminalModal({
             {/* Rendered lines */}
             {lines.map((line, index) => (
               <div key={index} className={`${getLineColor(line.type)} leading-relaxed`}>
-                {line.text || "\u00A0"}
+                {line.type === "image" && line.imageUrl ? (
+                  <div className="my-3">
+                    <img 
+                      src={line.imageUrl} 
+                      alt="Generated logo" 
+                      className="w-32 h-32 rounded-lg border border-border object-cover"
+                    />
+                  </div>
+                ) : (
+                  line.text || "\u00A0"
+                )}
               </div>
             ))}
 
