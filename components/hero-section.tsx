@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { TypewriterDemo } from "./typewriter-demo"
 import { TerminalModal } from "./terminal-modal"
+import { TypingAnimation } from "./typing-animation"
 
 export function HeroSection() {
   const [isTerminalOpen, setIsTerminalOpen] = useState(false)
@@ -31,7 +32,13 @@ export function HeroSection() {
         
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-balance">
           Build websites like you run{' '}
-          <span className="text-primary terminal-text">commands</span>
+          <TypingAnimation 
+            words={["commands", "scripts", "terminal", "code", "deploys"]}
+            className="text-primary terminal-text"
+            typingSpeed={120}
+            deletingSpeed={80}
+            pauseDuration={2000}
+          />
         </h1>
         
         <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto text-pretty">
