@@ -304,7 +304,13 @@ export function TerminalModal({
                     <img 
                       src={line.imageUrl} 
                       alt="Generated logo" 
-                      className="w-32 h-32 rounded-lg border border-border object-cover"
+                      crossOrigin="anonymous"
+                      className="w-32 h-32 rounded-lg border border-border object-cover bg-secondary"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        target.parentElement!.innerHTML = '<div class="w-32 h-32 rounded-lg border border-border bg-secondary flex items-center justify-center text-muted-foreground text-xs">Image loading...</div>';
+                      }}
                     />
                   </div>
                 ) : (

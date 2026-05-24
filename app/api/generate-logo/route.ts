@@ -18,13 +18,6 @@ export async function POST(request: NextRequest) {
     const encodedPrompt = encodeURIComponent(prompt);
     const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&seed=${Date.now()}&nologo=true`;
 
-    // Verify the image URL works by making a HEAD request
-    const checkResponse = await fetch(imageUrl, { method: "HEAD" });
-    
-    if (!checkResponse.ok) {
-      throw new Error("Failed to generate image");
-    }
-
     return NextResponse.json({
       success: true,
       imageUrl: imageUrl,
