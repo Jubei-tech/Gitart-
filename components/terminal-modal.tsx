@@ -35,7 +35,6 @@ export function TerminalModal({
     { text: "", type: "system" },
     { text: "Type:", type: "system" },
     { text: 'gitart create "your website idea"', type: "command" },
-    { text: 'gitart create logo "your website idea"', type: "command" },
   ];
 
   useEffect(() => {
@@ -97,6 +96,9 @@ export function TerminalModal({
       { text: "", type: "system", delay: 200 },
       { text: "✓ Website ready!", type: "success", delay: 300 },
       { text: 'Run "gitart deploy" to publish on Base', type: "info", delay: 200 },
+      { text: "", type: "system", delay: 200 },
+      { text: "Want a logo? Type:", type: "system", delay: 150 },
+      { text: `  gitart create logo "${idea}"`, type: "command", delay: 100 },
     ];
 
     return outputLines;
@@ -124,6 +126,8 @@ export function TerminalModal({
     setCurrentTypingLine(-1);
     setIsGenerating(false);
     setIsComplete(true);
+    setShowInput(true);
+    setTimeout(() => inputRef.current?.focus(), 100);
   }, []);
 
   const generateLogoWithAPI = useCallback(async (idea: string) => {
