@@ -130,19 +130,54 @@
 
 /* Terminal styles */
 .terminal-text {
-  text-shadow: 0 0 5px var(--terminal-green);
+  text-shadow: 
+    0 0 5px var(--terminal-green),
+    0 0 10px var(--terminal-green),
+    0 0 20px var(--terminal-green);
 }
 
 .terminal-glow {
-  box-shadow: 0 0 20px rgba(34, 197, 94, 0.15),
-              0 0 40px rgba(34, 197, 94, 0.1),
-              inset 0 0 60px rgba(34, 197, 94, 0.05);
+  box-shadow: 
+    0 0 20px rgba(34, 197, 94, 0.2),
+    0 0 40px rgba(34, 197, 94, 0.15),
+    0 0 60px rgba(34, 197, 94, 0.1),
+    inset 0 0 80px rgba(34, 197, 94, 0.05);
+}
+
+/* Text glow effect for terminal lines */
+.text-glow-green {
+  text-shadow: 
+    0 0 4px rgba(34, 197, 94, 0.8),
+    0 0 8px rgba(34, 197, 94, 0.6),
+    0 0 12px rgba(34, 197, 94, 0.4);
+}
+
+.text-glow-cyan {
+  text-shadow: 
+    0 0 4px rgba(6, 182, 212, 0.8),
+    0 0 8px rgba(6, 182, 212, 0.6),
+    0 0 12px rgba(6, 182, 212, 0.4);
+}
+
+.text-glow-yellow {
+  text-shadow: 
+    0 0 4px rgba(234, 179, 8, 0.8),
+    0 0 8px rgba(234, 179, 8, 0.6),
+    0 0 12px rgba(234, 179, 8, 0.4);
+}
+
+.text-glow-white {
+  text-shadow: 
+    0 0 4px rgba(255, 255, 255, 0.6),
+    0 0 8px rgba(255, 255, 255, 0.4),
+    0 0 12px rgba(255, 255, 255, 0.2);
 }
 
 .typing-cursor::after {
   content: '█';
   animation: blink 0.7s step-end infinite;
   color: var(--primary);
+  text-shadow: 0 0 8px var(--terminal-green);
 }
 
 @keyframes blink {
@@ -155,19 +190,34 @@
   100% { transform: translateY(100vh); }
 }
 
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.8; }
+  94% { opacity: 1; }
+  97% { opacity: 0.9; }
+  98% { opacity: 1; }
+}
+
 .scanline::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 2px;
-  background: linear-gradient(to right, transparent, rgba(34, 197, 94, 0.15), transparent);
-  animation: scanline 6s linear infinite;
+  height: 4px;
+  background: linear-gradient(to right, transparent, rgba(34, 197, 94, 0.3), transparent);
+  animation: scanline 4s linear infinite;
   pointer-events: none;
+  z-index: 10;
 }
 
-/* CRT effect overlay */
+/* CRT screen flicker */
+.terminal-flicker {
+  animation: flicker 5s infinite;
+}
+
+/* CRT effect overlay - subtle scanlines */
 .crt-overlay {
   pointer-events: none;
   position: absolute;
@@ -176,8 +226,26 @@
     repeating-linear-gradient(
       0deg,
       transparent,
-      transparent 2px,
-      rgba(0, 0, 0, 0.03) 2px,
-      rgba(0, 0, 0, 0.03) 4px
+      transparent 1px,
+      rgba(0, 0, 0, 0.05) 1px,
+      rgba(0, 0, 0, 0.05) 2px
     );
+  z-index: 5;
+}
+
+/* Phosphor glow on terminal content */
+.terminal-content {
+  position: relative;
+}
+
+.terminal-content::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(34, 197, 94, 0.03) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
 }

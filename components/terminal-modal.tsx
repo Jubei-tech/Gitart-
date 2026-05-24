@@ -243,17 +243,17 @@ export function TerminalModal({
   const getLineColor = (type: TerminalLine["type"]) => {
     switch (type) {
       case "header":
-        return "text-primary font-bold";
+        return "text-primary font-bold text-glow-green";
       case "success":
-        return "text-primary";
+        return "text-primary text-glow-green";
       case "command":
-        return "text-[oklch(0.55_0.25_200)]";
+        return "text-[oklch(0.55_0.25_200)] text-glow-cyan";
       case "section":
-        return "text-[oklch(0.85_0.15_90)]";
+        return "text-[oklch(0.85_0.15_90)] text-glow-yellow";
       case "detail":
         return "text-muted-foreground";
       case "info":
-        return "text-muted-foreground";
+        return "text-muted-foreground text-glow-white";
       default:
         return "text-foreground";
     }
@@ -292,7 +292,7 @@ export function TerminalModal({
           {/* Terminal Content */}
           <div
             ref={terminalRef}
-            className="p-4 h-[400px] overflow-y-auto font-mono text-sm relative scanline"
+            className="p-4 h-[400px] overflow-y-auto font-mono text-sm relative scanline terminal-flicker terminal-content"
           >
             <div className="crt-overlay" />
             
@@ -330,13 +330,13 @@ export function TerminalModal({
             {/* Input */}
             {showInput && !isGenerating && (
               <form onSubmit={handleSubmit} className="flex items-center mt-2">
-                <span className="text-primary mr-2">$</span>
+                <span className="text-primary mr-2 text-glow-green">$</span>
                 <input
                   ref={inputRef}
                   type="text"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  className="flex-1 bg-transparent outline-none text-foreground caret-primary"
+                  className="flex-1 bg-transparent outline-none text-foreground caret-primary text-glow-white"
                   placeholder='gitart create logo "your idea"'
                   autoFocus
                 />
@@ -348,7 +348,7 @@ export function TerminalModal({
             {isComplete && (
               <div className="mt-6 pt-4 border-t border-border">
                 <div className="flex items-center gap-3">
-                  <span className="text-primary">Ready to deploy!</span>
+                  <span className="text-primary text-glow-green">Ready to deploy!</span>
                   <span className="text-muted-foreground">Push to GitHub to continue</span>
                 </div>
                 <div className="mt-3">
