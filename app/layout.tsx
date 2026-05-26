@@ -14,9 +14,12 @@ export const metadata: Metadata = {
   generator: 'Gitart',
   keywords: ['AI', 'website builder', 'terminal', 'Base', 'blockchain', 'Web3'],
   icons: {
-    icon: '/favicon.png',
-    shortcut: '/favicon.png',
-    apple: '/apple-icon.png',
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+    ],
+    shortcut: '/favicon.svg',
+    apple: '/icon.svg',
   },
   openGraph: {
     title: 'Gitart - Terminal-style AI Website Builder on Base',
